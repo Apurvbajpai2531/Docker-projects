@@ -1,0 +1,21 @@
+name: Simple CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout/Clone Code
+        uses: actions/checkout@v4
+
+      - name: Display Message
+        run: echo "Hello dosto!!"
+
+      - name: Show All Files
+        run: ls -a
