@@ -1,0 +1,41 @@
+name: Docker CI
+
+on:
+push:
+branches:
+- main
+
+jobs:
+build-test:
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+
+  - name: Create .env
+    run: |
+      cat <<EOF > .env
+      DB_HOST=db
+      DB_NAME=mydb
+      DB_USER=postgres
+      DB_PASS=postgres
+      EOF
+
+  - name: Build containers
+    run: docker compose build
+
+  - name: Start services
+    run: docker compose up -d
+
+  - name: Wait for startup
+    run: sleep 10
+
+  - name: Health check
+    run: curl http://localhost:5000
+
+  - name: Stop containers
+    if: always()
+    run: docker compose down
+```
